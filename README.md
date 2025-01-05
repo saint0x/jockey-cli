@@ -1,6 +1,6 @@
 # Jockey CLI
 
-A high-performance CLI tool that converts Git repositories into structured text formats optimized for LLM ingestion. The tool recursively processes repositories and generates a human-readable output with an ASCII directory tree.
+A high-performance CLI tool that converts repositories into structured text formats optimized for LLM ingestion. The tool recursively processes repositories and generates a human-readable output with an ASCII directory tree.
 
 ## Features
 
@@ -37,10 +37,8 @@ jockey generate
 - `--json`: Output in JSON format
 - `--txt`: Output in plain text format
 - `--yaml`: Output in YAML format
-- `--path <PATH>`: Process specific subdirectory (optional)
+- `--path <PATH>`: Process specific subdirectory (relative to project root)
 - `--exclude <PATTERN>`: Additional exclude patterns (comma-separated)
-- `--parallel`: Enable parallel processing
-- `--verbose`: Enable verbose logging
 
 ### Examples
 
@@ -54,7 +52,12 @@ Process specific subdirectory:
 jockey generate --path src
 ```
 
-Add custom exclude patterns:
+Process subdirectory with specific format:
+```bash
+jockey generate --path src/lib --json
+```
+
+Exclude specific patterns:
 ```bash
 jockey generate --exclude "*.log,temp"
 ```
