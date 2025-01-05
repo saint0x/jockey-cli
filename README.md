@@ -71,6 +71,8 @@ The tool generates a structured output in your chosen format, containing:
 3. File contents with syntax highlighting
 4. Generated files are saved in `jockey-img/` with automatic versioning
 
+Check out a [sample output](jockey-img.md) to see what the generated documentation looks like.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
