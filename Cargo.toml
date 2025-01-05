@@ -1,0 +1,52 @@
+[package]
+name = "jockey-cli"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "A high-performance CLI tool for converting repositories into structured text formats optimized for LLM ingestion"
+license = "MIT"
+repository = "https://github.com/yourusername/jockey-cli"
+keywords = ["cli", "repository", "text", "llm", "compression"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "jockey"
+path = "src/bin/jockey.rs"
+
+[lib]
+name = "jockey_cli"
+path = "src/lib.rs"
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }  # CLI argument parsing
+flate2 = "1.0"  # Compression
+rayon = "1.8"   # Parallel processing
+walkdir = "2.4" # Directory traversal
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.9"
+base64 = "0.21"
+thiserror = "1.0"
+log = "0.4"
+env_logger = "0.10"
+ignore = "0.4"  # .gitignore support
+tokio = { version = "1.35", features = ["full"] }  # Async runtime
+crossbeam-channel = "0.5"  # Thread communication
+zip = "0.6"     # ZIP file creation
+chrono = "0.4.39"
+colored = "2.2.0"
+
+[dev-dependencies]
+tempfile = "3.8"  # For tests
+assert_fs = "1.0" # For filesystem tests
+predicates = "3.0" # For test assertions
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true    # Strip symbols from binary
+
+[profile.dev]
+opt-level = 1   # Faster compilation for development 
