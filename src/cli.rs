@@ -96,15 +96,38 @@ impl Config {
         match &self.command {
             Commands::Generate { path, .. } => {
                 if let Some(path) = path {
-                    // TODO: Implement fuzzy matching for subdirectory
-                    let target = root.join(path);
-                    if !target.exists() {
+                    // Normalize and resolve the path
+                    let target = if path.starts_with("/") {
+                        PathBuf::from(path)
+                    } else {
+                        root.join(path)
+                    };
+
+                    // Canonicalize to resolve any '..' or '.' components
+                    let canonical = target.canonicalize().map_err(|e| {
+                        JockeyError::Config(format!(
+                            "Failed to resolve path '{}': {}",
+                            path, e
+                        ))
+                    })?;
+
+                    // Ensure the path is within the project root
+                    if !canonical.starts_with(&root) {
                         return Err(JockeyError::Config(format!(
-                            "Directory '{}' does not exist",
+                            "Path '{}' is outside the project root",
                             path
                         )));
                     }
-                    Ok(target)
+
+                    // Ensure it's a directory
+                    if !canonical.is_dir() {
+                        return Err(JockeyError::Config(format!(
+                            "Path '{}' is not a directory",
+                            path
+                        )));
+                    }
+
+                    Ok(canonical)
                 } else {
                     Ok(root)
                 }
