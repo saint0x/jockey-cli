@@ -1,28 +1,27 @@
 # Jockey CLI
 
-A high-performance CLI tool that converts Git repositories into structured text formats optimized for LLM ingestion. The tool recursively processes repositories, compresses file contents, and generates a human-readable output with an ASCII directory tree.
+A high-performance CLI tool that converts Git repositories into structured text formats optimized for LLM ingestion. The tool recursively processes repositories and generates a human-readable output with an ASCII directory tree.
 
 ## Features
 
-- 🚀 **High Performance**: Parallel file processing and efficient compression
+- 🚀 **High Performance**: Parallel file processing for large codebases
 - 🌲 **Directory Tree**: Visual ASCII representation of repository structure
-- 🗜️ **Compression**: Automatic lossless compression of file contents
 - 📄 **Multiple Formats**: Support for Markdown, Text, JSON, and YAML output
-- 🎯 **Selective Processing**: Exclude files/directories using .gitignore patterns
-- 📦 **ZIP Output**: Optional ZIP archive output
+- 🎯 **Smart Exclusions**: Automatically excludes common large directories and binary files
+- 📸 **Versioned Output**: Automatically handles multiple snapshots with versioning
 
 ## Installation
 
 ```bash
-cargo install jockey-cli
+cargo install --git https://github.com/saint0x/jockey-cli
 ```
 
 Or build from source:
 
 ```bash
-git clone https://github.com/yourusername/jockey-cli
+git clone https://github.com/saint0x/jockey-cli
 cd jockey-cli
-cargo build --release
+cargo install --path .
 ```
 
 ## Usage
@@ -35,9 +34,11 @@ jockey generate
 
 ### Options
 
-- `--format <FORMAT>`: Output format (md, txt, json, yaml)
-- `--exclude <PATTERN>`: Exclude files/directories (comma-separated)
-- `--compressed`: Output as ZIP archive
+- `--json`: Output in JSON format
+- `--txt`: Output in plain text format
+- `--yaml`: Output in YAML format
+- `--path <PATH>`: Process specific subdirectory (optional)
+- `--exclude <PATTERN>`: Additional exclude patterns (comma-separated)
 - `--parallel`: Enable parallel processing
 - `--verbose`: Enable verbose logging
 
@@ -45,65 +46,27 @@ jockey generate
 
 Generate JSON output:
 ```bash
-jockey generate --format json
+jockey generate --json
 ```
 
-Exclude node_modules and target directories:
+Process specific subdirectory:
 ```bash
-jockey generate --exclude "node_modules,target"
+jockey generate --path src
 ```
 
-Generate compressed output:
+Add custom exclude patterns:
 ```bash
-jockey generate --compressed
+jockey generate --exclude "*.log,temp"
 ```
 
-Enable parallel processing with verbose logging:
-```bash
-jockey generate --parallel --verbose
-```
+## Output
 
-## Output Format
+The tool generates a structured output in your chosen format, containing:
 
-The tool generates a structured output containing:
-
-1. ASCII directory tree
-2. File contents with paths
-3. Compressed content (when enabled)
-
-Example Markdown output:
-
-```markdown
-# Repository Structure
-
-```
-/project-root
-├── src
-│   ├── main.rs
-│   └── utils.rs
-├── README.md
-└── Cargo.toml
-```
-
-## File: src/main.rs
-
-```rust
-// File contents here
-```
-
-## File: src/utils.rs
-
-```rust
-// File contents here
-```
-```
-
-## Performance
-
-- Parallel processing for large repositories
-- Efficient compression using flate2
-- O(1) memory usage for file processing
-- Optimized for repositories up to 10GB
+1. Timestamp and metadata
+2. ASCII directory tree
+3. File contents with syntax highlighting
+4. Generated files are saved in `jockey-img/` with automatic versioning
 
 ## Contributing
 
