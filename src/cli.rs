@@ -42,16 +42,16 @@ pub enum Commands {
         #[arg(long)]
         yaml: bool,
 
-        /// Exclude patterns (comma-separated)
-        #[arg(long)]
+    /// Exclude patterns (comma-separated)
+    #[arg(long)]
         exclude: Option<String>,
 
-        /// Enable parallel processing
-        #[arg(long)]
+    /// Enable parallel processing
+    #[arg(long)]
         parallel: bool,
 
-        /// Enable verbose logging
-        #[arg(long)]
+    /// Enable verbose logging
+    #[arg(long)]
         verbose: bool,
     },
 }
@@ -221,7 +221,7 @@ impl Config {
 
                     // Ensure it's a directory
                     if !canonical.is_dir() {
-                        return Err(JockeyError::Config(format!(
+        return Err(JockeyError::Config(format!(
                             "Path '{}' is not a directory",
                             path
                         )));

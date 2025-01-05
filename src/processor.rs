@@ -59,15 +59,15 @@ async fn generate(config: &Config) -> Result<()> {
     // Process files in parallel for better performance on large codebases
     let processed_files = files
         .par_iter()
-        .map(|path| {
-            let content = std::fs::read_to_string(path).map_err(|e| {
-                JockeyError::Processing(format!("Failed to read file {}: {}", path.display(), e))
-            })?;
-            
-            Ok(FileEntry {
-                path: path.to_string_lossy().into_owned(),
-                content,
-            })
+        .filter_map(|path| {
+            // Skip binary files and non-UTF-8 files
+            match std::fs::read_to_string(path) {
+                Ok(content) => Some(Ok(FileEntry {
+                    path: path.to_string_lossy().into_owned(),
+                    content,
+                })),
+                Err(_) => None, // Skip files that can't be read as UTF-8
+            }
         })
         .collect::<Result<Vec<_>>>()?;
 
