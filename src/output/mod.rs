@@ -140,7 +140,7 @@ fn format_yaml(repo: Repository) -> Result<String> {
             Local::now().format("%H:%M:%S")
         ),
         repository: repo,
-        footer: "📸 Generated with Jockey CLI (github.com/saint0x/jockey-cli)".to_string(),
+        footer: "📸 Generated for free with Jockey CLI (github.com/saint0x/jockey-cli)".to_string(),
     };
 
     serde_yaml::to_string(&image).map_err(|e| {

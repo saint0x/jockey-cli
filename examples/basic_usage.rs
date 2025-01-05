@@ -1,4 +1,5 @@
-use jockey_cli::{Config, Command, OutputFormat, process_repository};
+use jockey_cli::{cli::{Config, Commands}, process};
+use env_logger;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -7,18 +8,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     // Create configuration programmatically
     let config = Config {
-        command: Command::Generate,
-        format: OutputFormat::Json,  // Using JSON format for this example
-        exclude: Some("target,node_modules".to_string()),
-        compressed: true,
-        parallel: true,
-        verbose: true,
-        input_dir: ".".to_string(),  // Current directory
+        command: Commands::Generate {
+            path: None,
+            md: false,
+            json: true,
+            txt: false,
+            yaml: false,
+            exclude: Some("target,node_modules".to_string()),
+            parallel: true,
+            verbose: true,
+        },
     };
     
     // Process the repository
-    process_repository(config).await?;
-    println!("Repository processing complete! Check output.zip");
+    process(config).await?;
     
     Ok(())
 } 
